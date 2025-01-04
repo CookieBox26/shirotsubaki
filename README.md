@@ -6,11 +6,17 @@
 
 Currently under preparation.
 
-#### From Source Code
+#### From GitHub
+
+```
+pip install git+https://github.com/CookieBox26/shirotsubaki
+```
+
+#### From Local Source Code
 
 ```
 git clone https://github.com/CookieBox26/shirotsubaki
-cd cookies_utilities
+cd shirotsubaki
 pip install .
 ```
 
