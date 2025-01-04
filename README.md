@@ -1,5 +1,8 @@
 # shirotsubaki
 
+This package is being developed to help generate beautiful reports.  
+[Documentation](https://shirotsubaki.readthedocs.io/en/latest/)
+
 ### Installation (for Users)
 
 #### From PyPI
