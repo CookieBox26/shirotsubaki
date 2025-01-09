@@ -1,5 +1,5 @@
 # Reference
 
-## shirotsubaki.utils
+## Report Generation
 
-::: shirotsubaki.utils.lighten_color
+::: shirotsubaki.report.Report

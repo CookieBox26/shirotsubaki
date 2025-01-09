@@ -4,24 +4,30 @@ build-backend = "hatchling.build"
 
 [project]
 name = "shirotsubaki"
-version = "0.0.1"
+version = "0.0.1+2025.1.9"
 authors = [
-  { name="CookieBox26", email="cookie-box@cookie-box.info" },
+  {name = "CookieBox26", email = "cookie-box@cookie-box.info"},
 ]
 description = "Utility functions."
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "Jinja2",
 ]
 
 [project.optional-dependencies]
+test = [
+  "pytest",
+]
 docs = [
-    "mkdocs",
-    "mkdocs-material",
-    "mkdocstrings-python",
+  "mkdocs",
+  "mkdocs-material",
+  "mkdocstrings-python",
 ]
 
 [project.urls]

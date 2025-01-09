@@ -12,7 +12,7 @@ Currently under preparation.
 #### From GitHub
 
 ```
-pip install git+https://github.com/CookieBox26/shirotsubaki
+pip install git+https://github.com/CookieBox26/shirotsubaki -U
 ```
 
 #### From Local Source Code
@@ -25,7 +25,7 @@ pip install .
 
 ### Development Guide (for Developers)
 ```
-python -m unittest discover tests -v  # Please test locally
+pytest  # Please test locally
 vi docs/reference.md  # Please update documentation
 mkdocs serve  # Please preview documentation locally
 ```
