@@ -46,16 +46,16 @@ class ReportBase(ABC):
         self.data[key] = value
 
     def output(self, out_html) -> None:
-        self.data['style'] = str(self.style)
+        self.data['_style'] = str(self.style)
         with open(out_html, 'w', encoding='utf8', newline='\n') as ofile:
             ofile.write(self.template.render(self.data))
 
 
 class Report(ReportBase):
-    """A class for creating simple reports.
+    """A class for creating a simple report.
 
     Example:
-        ``` python
+        ```python
         import shirotsubaki.report
 
         report = shirotsubaki.report.Report()
@@ -68,3 +68,49 @@ class Report(ReportBase):
     def __init__(self) -> None:
         super().__init__()
         self.template = self.env.get_template('report.html')
+
+
+class ReportWithTabs(ReportBase):
+    """A class for creating a report with tabs.
+
+    Example:
+        ```python
+        import shirotsubaki.report
+
+        report = shirotsubaki.report.ReportWithTabs()
+        report.set('title', 'xxxxxx')
+        report.set_tab('apple', 'apple apple')
+        report.set_tab('banana', 'banana banana')
+        report.set_tab('cherry', 'cherry cherry')
+        report.output('my_report_with_tabs.html')
+        ```
+    """
+    def __init__(self) -> None:
+        super().__init__()
+        self.template = self.env.get_template('report_with_tabs.html')
+        self.style.set('body', 'margin', '0')
+        self.tabs = {}
+        self.set('tabs', self.tabs)
+
+    def set_tab(self, key, value) -> None:
+        self.tabs[key] = value
+
+    def _create_elements(self) -> None:
+        selectors_comb = []
+        selectors_has = []
+        elements_radio = []
+        elements_label = []
+        for i, label in enumerate(self.tabs):
+            selectors_comb.append(f'#btn{i:02}:checked ~ #tab{i:02}')
+            selectors_has.append(f':has(#btn{i:02}:checked) .header label[for="btn{i:02}"]')
+            elements_radio.append(f'<input type="radio" name="tab" id="btn{i:02}" hidden>')
+            elements_label.append(f'<label for="btn{i:02}">{label}</label>')
+        elements_radio[0] = elements_radio[0].replace('hidden', 'hidden checked')
+        self.set('selectors_comb', ',\n'.join(selectors_comb))
+        self.set('selectors_has', ',\n'.join(selectors_has))
+        self.set('elements_radio', '\n'.join(elements_radio))
+        self.set('elements_label', '\n'.join(elements_label))
+
+    def output(self, out_html) -> None:
+        self._create_elements()
+        super().output(out_html)

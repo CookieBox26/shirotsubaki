@@ -20,3 +20,5 @@ plugins:
             show_root_heading: true
             docstring_section_style: list
             show_source: false
+markdown_extensions:
+  - pymdownx.superfences
