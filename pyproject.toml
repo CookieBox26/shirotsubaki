@@ -4,13 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "shirotsubaki"
-version = "0.0.1+2025.1.10"
-authors = [
-  {name = "CookieBox26", email = "cookie-box@cookie-box.info"},
-]
+version = "0.0.1a0"
 description = "Utility functions."
 readme = "README.md"
 requires-python = ">=3.10"
+license = "MIT"
+authors = [
+  { name = "CookieBox26", email = "cookie-box@cookie-box.info" },
+]
 classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",
