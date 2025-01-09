@@ -6,6 +6,7 @@ theme:
 nav:
   - Home: index.md
   - Reference: reference.md
+  - Examples: examples.md
 extra:
   social:
     - icon: fontawesome/brands/github

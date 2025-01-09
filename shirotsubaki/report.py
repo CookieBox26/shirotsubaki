@@ -1,25 +1,7 @@
 from abc import ABC, abstractmethod
 from jinja2 import Environment, FileSystemLoader, meta
 import importlib.resources
-
-
-class Style(dict):
-    def __init__(self, d) -> None:
-        super().__init__(d)
-
-    def set(self, element: str, property: str, value: str) -> None:
-        if element not in self:
-            self[element] = {}
-        self[element][property] = value
-
-    def __str__(self) -> str:
-        s = ''
-        for k, v in self.items():
-            s += k + ' {\n'
-            for k_, v_ in v.items():
-                s += f'  {k_}: {v_};\n'
-            s += '}\n'
-        return s[:-1]
+from shirotsubaki.style import Style
 
 
 class ReportBase(ABC):
@@ -29,7 +11,7 @@ class ReportBase(ABC):
         self.env = Environment(loader=FileSystemLoader(template_dir))
         self.style = Style({
             'body': {
-                'margin': '15px',
+                'margin': '20px',
                 'color': '#303030',
                 'font-family': '\'Verdana\', \'BIZ UDGothic\', sans-serif',
                 'font-size': '90%',
@@ -39,16 +21,33 @@ class ReportBase(ABC):
             'table': {
                 'border-collapse': 'collapse',
             },
+            'th, td': {
+                'border': '1px solid #303030',
+                'padding': '0.3em 0.6em',
+            },
         })
-        self.data = {}
+        self._data = {}
+        self.keys_list = []
+        self.keys_reserved = ['style']
 
     def set(self, key, value) -> None:
-        self.data[key] = value
+        if (key in self.keys_reserved) or (key in self.keys_list):
+            print(f'Key \'{key}\' is not allowed to be set.')
+            return
+        self._data[key] = value
+
+    def append_to(self, key, value) -> None:
+        if key not in self.keys_list:
+            print(f'Key \'{key}\' is not allowed to be append.')
+            return
+        self._data[key].append(value)
 
     def output(self, out_html) -> None:
-        self.data['_style'] = str(self.style)
+        self._data['style'] = str(self.style)
+        for key in self.keys_list:
+            self._data[key] = '\n'.join([str(v) for v in self._data[key]])
         with open(out_html, 'w', encoding='utf8', newline='\n') as ofile:
-            ofile.write(self.template.render(self.data))
+            ofile.write(self.template.render(self._data))
 
 
 class Report(ReportBase):
@@ -59,15 +58,17 @@ class Report(ReportBase):
         import shirotsubaki.report
 
         report = shirotsubaki.report.Report()
-        report.style.set('body', 'color', 'red')
-        report.set('title', 'xxxxxx')
-        report.set('content', 'yyyyyy')
+        report.style.set('h1', 'color', 'steelblue')
+        report.set('title', 'Fruits')
+        report.append_to('content', Elm('h1', 'Fruits'))
         report.output('my_report.html')
         ```
     """
     def __init__(self) -> None:
         super().__init__()
         self.template = self.env.get_template('report.html')
+        self._data['content'] = []
+        self.keys_list.append('content')
 
 
 class ReportWithTabs(ReportBase):
@@ -78,10 +79,10 @@ class ReportWithTabs(ReportBase):
         import shirotsubaki.report
 
         report = shirotsubaki.report.ReportWithTabs()
-        report.set('title', 'xxxxxx')
-        report.set_tab('apple', 'apple apple')
-        report.set_tab('banana', 'banana banana')
-        report.set_tab('cherry', 'cherry cherry')
+        report.set('title', 'Fruits Fruits Fruits')
+        report.add_tab('apple', 'apple apple')
+        report.add_tab('banana', 'banana banana')
+        report.add_tab('cherry', 'cherry cherry')
         report.output('my_report_with_tabs.html')
         ```
     """
@@ -90,10 +91,17 @@ class ReportWithTabs(ReportBase):
         self.template = self.env.get_template('report_with_tabs.html')
         self.style.set('body', 'margin', '0')
         self.tabs = {}
-        self.set('tabs', self.tabs)
+        self.keys_reserved.append('tabs')
 
-    def set_tab(self, key, value) -> None:
-        self.tabs[key] = value
+    def add_tab(self, key, content=None) -> None:
+        if key in self.tabs:
+            raise KeyError(f'Tab \'{tab_name}\' already exists.')
+        self.tabs[key] = [content] if content else []
+
+    def append_to_tab(self, key, value) -> None:
+        if key not in self.tabs:
+            raise KeyError(f'Tab \'{tab_name}\' does not exist.')
+        self.tabs[key].append(value)
 
     def _create_elements(self) -> None:
         selectors_comb = []
@@ -103,7 +111,7 @@ class ReportWithTabs(ReportBase):
         for i, label in enumerate(self.tabs):
             selectors_comb.append(f'#btn{i:02}:checked ~ #tab{i:02}')
             selectors_has.append(f':has(#btn{i:02}:checked) .header label[for="btn{i:02}"]')
-            elements_radio.append(f'<input type="radio" name="tab" id="btn{i:02}" hidden>')
+            elements_radio.append(f'<input type="radio" name="tab" id="btn{i:02}" hidden/>')
             elements_label.append(f'<label for="btn{i:02}">{label}</label>')
         elements_radio[0] = elements_radio[0].replace('hidden', 'hidden checked')
         self.set('selectors_comb', ',\n'.join(selectors_comb))
@@ -113,4 +121,7 @@ class ReportWithTabs(ReportBase):
 
     def output(self, out_html) -> None:
         self._create_elements()
+        for key in self.tabs:
+            self.tabs[key] = '\n'.join([str(v) for v in self.tabs[key]])
+        self._data['tabs'] = self.tabs
         super().output(out_html)
