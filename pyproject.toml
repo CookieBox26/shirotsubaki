@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "shirotsubaki"
-version = "0.0.1a0"
+version = "0.0.1a1"
 description = "Utility functions."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -33,3 +33,4 @@ docs = [
 
 [project.urls]
 GitHub = "https://github.com/CookieBox26/shirotsubaki"
+Documentation = "https://shirotsubaki.readthedocs.io/en/latest/"

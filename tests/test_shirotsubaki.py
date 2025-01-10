@@ -51,7 +51,9 @@ def test_report_with_tabs():
     report.add_tab('apple', 'apple apple')
     report.add_tab('banana', 'banana banana')
     report.add_tab('cherry', 'cherry cherry')
-    report.append_to_tab('cherry', create_table())
+    for _ in range(5):
+        report.append_to_tab('cherry', Elm('h3', 'table'))
+        report.append_to_tab('cherry', create_table())
     report.output('my_report_with_tabs.html')
     os.remove('my_report_with_tabs.html')
 

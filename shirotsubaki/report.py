@@ -23,7 +23,7 @@ class ReportBase(ABC):
             },
             'th, td': {
                 'border': '1px solid #303030',
-                'padding': '0.3em 0.6em',
+                'padding': '0.2em 0.4em',
             },
         })
         self._data = {}

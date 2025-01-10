@@ -36,6 +36,9 @@ class Style(dict):
             Wrap the table in <div class="table-container"></div>.
         """
         return Style({
+            'th, td': {
+                'border': '0',
+            },
             '.table-container': {
                 'overflow': 'auto',
                 'white-space': 'nowrap',
@@ -61,7 +64,7 @@ class Style(dict):
                 'z-index': '3',
             },
             '.table-container tbody td': {
-                'border-bottom': '1px dotted #303030',
+                'border-bottom': '1px solid #303030',
                 'padding-right': '0.5em',
             },
             '.table-container tbody td:first-child': {
@@ -73,4 +76,5 @@ class Style(dict):
         })
 
     def add_scrollable_table(self) -> None:
-        self.update(Style.scrollable_table())
+        sty = self.__add__(Style.scrollable_table())
+        self.update(sty)
