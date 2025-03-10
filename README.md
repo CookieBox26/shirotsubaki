@@ -17,7 +17,7 @@ pip install shirotsubaki
 If you want to use the latest version that has not been released, clone this repository and install from the local directory.
 
 ```
-git clone https://github.com/CookieBox26/shirotsubaki
+git clone git@github.com:CookieBox26/shirotsubaki.git
 cd shirotsubaki
 pip install .
 ```
@@ -34,6 +34,7 @@ pytest  # Please test locally
 vi docs/reference.md  # Please update documentation
 mkdocs serve  # Please preview documentation locally
 ```
+If you have run the command above, you can view the documentation at http://localhost:8000/.  
 If you are not an administrator, please open a pull request at this point.
 
 ### Build and upload the distribution archives (for administrator only)

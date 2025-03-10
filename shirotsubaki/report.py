@@ -61,9 +61,12 @@ class Report(ReportBase):
         report = shirotsubaki.report.Report()
         report.style.set('h1', 'color', 'steelblue')
         report.set('title', 'Fruits')
-        report.append_to('content', Elm('h1', 'Fruits'))
-        report.output('my_report.html')
+        report.append_to('content', Elm('h1', 'Fruits Fruits'))
+        report.append_to('content', 'Fruits Fruits Fruits')
+        report.output('docs/example_report.html')
         ```
+
+        [example_report.html](../example_report.html)
     """
     def __init__(self) -> None:
         super().__init__()
@@ -84,8 +87,10 @@ class ReportWithTabs(ReportBase):
         report.add_tab('apple', 'apple apple')
         report.add_tab('banana', 'banana banana')
         report.add_tab('cherry', 'cherry cherry')
-        report.output('my_report_with_tabs.html')
+        report.output('docs/example_report_with_tabs.html')
         ```
+
+        [example_report_with_tabs.html](../example_report_with_tabs.html)
     """
     def __init__(self) -> None:
         super().__init__()
