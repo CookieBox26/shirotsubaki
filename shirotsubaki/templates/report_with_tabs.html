@@ -51,7 +51,6 @@ body {
 
 {% for tab_label, tab in tabs.items() %}
 <div id="tab{{ "{:02}".format(loop.index0) }}" class="tab">
-<h3>{{ tab_label }}</h3>
 {{ tab }}
 </div>
 {% endfor %}

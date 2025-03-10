@@ -35,11 +35,11 @@ def create_table():
 report = shirotsubaki.report.ReportWithTabs()
 report.style.add_scrollable_table()
 report.set('title', 'Fruits Fruits Fruits')
-report.add_tab('apple', 'apple apple')
+report.append_to_tab('apple', Elm('h2', 'apple apple apple'))
 for _ in range(5):
     report.append_to_tab('apple', Elm('h3', 'table'))
     report.append_to_tab('apple', create_table())
-report.add_tab('banana', 'banana banana')
-report.add_tab('cherry', 'cherry cherry')
+report.append_to_tab('banana', 'banana banana')
+report.append_to_tab('cherry', 'cherry cherry')
 report.output('docs/example_1.html')
 ```

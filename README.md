@@ -27,7 +27,7 @@ pip install .
 Please run the following commands.
 
 ```
-git clone https://github.com/CookieBox26/shirotsubaki
+git clone git@github.com:CookieBox26/shirotsubaki.git
 cd shirotsubaki
 # make some changes to the code
 pytest  # Please test locally

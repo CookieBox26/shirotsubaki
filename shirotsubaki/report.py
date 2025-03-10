@@ -56,6 +56,7 @@ class Report(ReportBase):
     Example:
         ```python
         import shirotsubaki.report
+        from shirotsubaki.element import Element as Elm
 
         report = shirotsubaki.report.Report()
         report.style.set('h1', 'color', 'steelblue')
@@ -95,12 +96,12 @@ class ReportWithTabs(ReportBase):
 
     def add_tab(self, key, content=None) -> None:
         if key in self.tabs:
-            raise KeyError(f'Tab \'{tab_name}\' already exists.')
+            raise KeyError(f'Tab \'{key}\' already exists.')
         self.tabs[key] = [content] if content else []
 
     def append_to_tab(self, key, value) -> None:
         if key not in self.tabs:
-            raise KeyError(f'Tab \'{tab_name}\' does not exist.')
+            self.add_tab(key)
         self.tabs[key].append(value)
 
     def _create_elements(self) -> None:
