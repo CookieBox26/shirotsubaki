@@ -34,27 +34,26 @@ def test_lighten_color():
 
 
 def test_report():
-    report = shirotsubaki.report.Report()
-    report.style.set('h1', 'color', 'steelblue')
-    report.style.add_scrollable_table()
-    report.set('title', 'Fruits')
-    report.append_to('content', Elm('h1', 'Fruits'))
-    report.append_to('content', create_table())
-    report.output('my_report.html')
+    rp = shirotsubaki.report.Report(title='Fruits')
+    rp.style.set('h1', 'color', 'steelblue')
+    rp.style.add_scrollable_table()
+    rp.append(Elm('h1', 'Fruits'))
+    rp.append(create_table())
+    rp.output('my_report.html')
     os.remove('my_report.html')
 
 
 def test_report_with_tabs():
-    report = shirotsubaki.report.ReportWithTabs()
-    report.style.add_scrollable_table()
-    report.set('title', 'Fruits Fruits Fruits')
-    report.add_tab('apple', 'apple apple')
-    report.add_tab('banana', 'banana banana')
-    report.add_tab('cherry', 'cherry cherry')
+    rp = shirotsubaki.report.ReportWithTabs()
+    rp.style.add_scrollable_table()
+    rp.set('title', 'Fruits Fruits Fruits')
+    rp.add_tab('apple', 'apple apple')
+    rp.add_tab('banana', 'banana banana')
+    rp.add_tab('cherry', 'cherry cherry')
     for _ in range(5):
-        report.append_to_tab('cherry', Elm('h3', 'table'))
-        report.append_to_tab('cherry', create_table())
-    report.output('my_report_with_tabs.html')
+        rp.append_to_tab('cherry', Elm('h3', 'table'))
+        rp.append_to_tab('cherry', create_table())
+    rp.output('my_report_with_tabs.html')
     os.remove('my_report_with_tabs.html')
 
 

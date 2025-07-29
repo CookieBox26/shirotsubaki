@@ -6,7 +6,7 @@ from shirotsubaki.style import Style
 
 class ReportBase(ABC):
     @abstractmethod
-    def __init__(self) -> None:
+    def __init__(self, title=None) -> None:
         template_dir = importlib.resources.files('shirotsubaki').joinpath('templates')
         self.env = Environment(loader=FileSystemLoader(template_dir))
         self.style = Style({
@@ -29,6 +29,8 @@ class ReportBase(ABC):
         self._data = {}
         self.keys_list = []
         self.keys_reserved = ['style']
+        if title is not None:
+            self.set('title', title)
 
     def set(self, key, value) -> None:
         if (key in self.keys_reserved) or (key in self.keys_list):
@@ -58,21 +60,23 @@ class Report(ReportBase):
         import shirotsubaki.report
         from shirotsubaki.element import Element as Elm
 
-        report = shirotsubaki.report.Report()
-        report.style.set('h1', 'color', 'steelblue')
-        report.set('title', 'Fruits')
-        report.append_to('content', Elm('h1', 'Fruits Fruits'))
-        report.append_to('content', 'Fruits Fruits Fruits')
-        report.output('docs/example_report.html')
+        rp = shirotsubaki.report.Report(title='Fruits')
+        rp.style.set('h1', 'color', 'steelblue')
+        rp.append(Elm('h1', 'Fruits Fruits'))
+        rp.append('Fruits Fruits Fruits')
+        rp.output('docs/example_report.html')
         ```
 
         [example_report.html](../example_report.html)
     """
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, title=None) -> None:
+        super().__init__(title)
         self.template = self.env.get_template('report.html')
         self._data['content'] = []
         self.keys_list.append('content')
+
+    def append(self, value) -> None:
+        self.append_to('content', value)
 
 
 class ReportWithTabs(ReportBase):
@@ -82,18 +86,18 @@ class ReportWithTabs(ReportBase):
         ```python
         import shirotsubaki.report
 
-        report = shirotsubaki.report.ReportWithTabs()
-        report.set('title', 'Fruits Fruits Fruits')
-        report.add_tab('apple', 'apple apple')
-        report.add_tab('banana', 'banana banana')
-        report.add_tab('cherry', 'cherry cherry')
-        report.output('docs/example_report_with_tabs.html')
+        rp = shirotsubaki.report.ReportWithTabs()
+        rp.set('title', 'Fruits Fruits Fruits')
+        rp.add_tab('apple', 'apple apple')
+        rp.add_tab('banana', 'banana banana')
+        rp.add_tab('cherry', 'cherry cherry')
+        rp.output('docs/example_report_with_tabs.html')
         ```
 
         [example_report_with_tabs.html](../example_report_with_tabs.html)
     """
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, title=None) -> None:
+        super().__init__(title)
         self.template = self.env.get_template('report_with_tabs.html')
         self.style.set('body', 'margin', '0')
         self.tabs = {}
