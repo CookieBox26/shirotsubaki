@@ -10,36 +10,58 @@ Here are some examples of how to use this package:
 import shirotsubaki.report
 from shirotsubaki.element import Element as Elm
 
-def create_table():
-    tbl = Elm('table')
-    thead = Elm('thead')
-    tbody = Elm('tbody')
+def example_1():
+    rp = shirotsubaki.report.ReportWithTabs()
+    rp.set('title', 'Fruits Fruits Fruits')
+    rp.style.add_scrollable_table()
 
-    thead.append(Elm('tr'))
-    for _ in range(5):
-        thead.inner[-1].append(Elm('th', 'apple'))
-        thead.inner[-1].append(Elm('th', 'banana'))
-        thead.inner[-1].append(Elm('th', 'cherry'))
-    for i in range(20):
-        tbody.append(Elm('tr'))
-        for _ in range(5):
-            tbody.inner[-1].append(Elm('td', 'apple'))
-            tbody.inner[-1].append(Elm('td', 'banana'))
-            tbody.inner[-1].append(Elm('td', 'cherry'))
+    rp.add_tab('apple')
+    rp.append(Elm.table_from_rows([['apple'] * 10] * 20, header=True, index=True, scrollable=True))
 
-    tbl.append(thead)
-    tbl.append(tbody)
-    div = Elm('div', tbl).set_attr('class', 'table-container')
-    return div
+    rp.add_tab('banana')
+    rp.append(Elm.table_from_rows([['banana'] * 10] * 20, header=True, index=False, scrollable=True))
 
-report = shirotsubaki.report.ReportWithTabs()
-report.style.add_scrollable_table()
-report.set('title', 'Fruits Fruits Fruits')
-report.append_to_tab('apple', Elm('h2', 'apple apple apple'))
-for _ in range(5):
-    report.append_to_tab('apple', Elm('h3', 'table'))
-    report.append_to_tab('apple', create_table())
-report.append_to_tab('banana', 'banana banana')
-report.append_to_tab('cherry', 'cherry cherry')
-report.output('docs/example_1.html')
+    rp.add_tab('cherry')
+    rp.append(Elm.table_from_rows([['cherry'] * 10] * 20, header=False, index=False, scrollable=True))
+
+    rp.output('docs/example_1.html')
+```
+
+## Example 2
+
+<a href="../example_2.html" class="asis" target="_blank" rel="noopener noreferrer">example_2.html</a>
+
+```python
+import shirotsubaki.report
+from shirotsubaki.element import Element as Elm
+
+def example_2():
+    rp = shirotsubaki.report.Report(title='Fruits')
+    rp.append(Elm('h1', 'Apple'))
+    rp.append_as_toggle('001', 'This message will be collapsed inside the toggle.')
+    rp.output('docs/example_2.html')
+```
+
+## Example 2
+
+<a href="../example_3.html" class="asis" target="_blank" rel="noopener noreferrer">example_3.html</a>
+
+```python
+import shirotsubaki.report
+from shirotsubaki.element import Element as Elm
+
+def example_3():
+    rp = shirotsubaki.report.Report(title='Fruits')
+    rp.append(Elm('h1', 'Apple'))
+    rp.append_as_minitabs('001', {
+        'Taro': 'Taro Taro',
+        'Jiro': 'Jiro Jiro',
+        'Saburo': 'Saburo Saburo',
+    })
+    rp.append_as_minitabs('002', {
+        'Shiro': 'Shiro Shiro',
+        'Goro': 'Goro Goro',
+        'Rokuro': 'Rokuro Rokuro',
+    })
+    rp.output('docs/example_3.html')
 ```

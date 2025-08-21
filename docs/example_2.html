@@ -36,16 +36,42 @@ th, td {
 th {
   background: var(--surface-primary);
 }
-h1 {
-  color: steelblue;
+#toggle001 {
+  display: none;
+}
+.content001 {
+  display: none;
+}
+#toggle001:checked ~ .content001 {
+  display: block;
+}
+label.toggle-label {
+  display: inline-block;
+  color: var(--text-link);
+  margin-bottom: 1.0em;
+}
+div.toggle-area {
+  background: var(--surface-primary);
+  padding: 1.0em;
 }
 </style>
 </head>
 <body>
 <h1>
-Fruits Fruits
+Apple
 </h1>
 
-Fruits Fruits Fruits
+<label for="toggle001" class="toggle-label">
+Show details
+</label>
+
+<input type="checkbox" id="toggle001">
+</input>
+
+<div class="toggle-area content001">
+This message will be collapsed inside the toggle.
+</div>
+
+<br/>
 </body>
 </html>
