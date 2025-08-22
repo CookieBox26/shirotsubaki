@@ -2,6 +2,7 @@
 
 Here are some examples of how to use this package:
 
+
 ## Example 1
 
 <a href="../example_1.html" class="asis" target="_blank" rel="noopener noreferrer">example_1.html</a>
@@ -27,6 +28,7 @@ def example_1():
     rp.output('docs/example_1.html')
 ```
 
+
 ## Example 2
 
 <a href="../example_2.html" class="asis" target="_blank" rel="noopener noreferrer">example_2.html</a>
@@ -42,7 +44,8 @@ def example_2():
     rp.output('docs/example_2.html')
 ```
 
-## Example 2
+
+## Example 3
 
 <a href="../example_3.html" class="asis" target="_blank" rel="noopener noreferrer">example_3.html</a>
 
@@ -64,4 +67,29 @@ def example_3():
         'Rokuro': 'Rokuro Rokuro',
     })
     rp.output('docs/example_3.html')
+```
+
+
+## Example 4
+
+<a href="../example_4.html" class="asis" target="_blank" rel="noopener noreferrer">example_4.html</a>
+
+```python
+import shirotsubaki.report
+import shirotsubaki.utils
+import matplotlib
+import matplotlib.pyplot as plt
+
+def example_4():
+    rp = shirotsubaki.report.Report(title='Fruits')
+
+    matplotlib.rcParams['svg.fonttype'] = 'none'
+    plt.rcParams['font.size'] = 11
+
+    fig, ax = plt.subplots(nrows=1, figsize=(4, 3))
+    ax.plot([0, 1, 2, 3, 4], [0.7, 0.5, 0.40, 0.35, 0.3])
+    ax.plot([0, 1, 2, 3, 4], [0.7, 0.6, 0.55, 0.50, 0.475])
+    rp.append(shirotsubaki.utils.figure_to_html(fig, callback=plt.close))
+
+    rp.output('docs/example_4.html')
 ```

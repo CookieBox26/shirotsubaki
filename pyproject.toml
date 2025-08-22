@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "shirotsubaki"
-version = "0.0.1a3"
+version = "0.0.1a4"
 description = "This package is being developed to help generate beautiful reports."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -22,6 +22,7 @@ dependencies = [
 [project.optional-dependencies]
 test = [
     "pytest",
+    "matplotlib",
 ]
 docs = [
     "mkdocs",

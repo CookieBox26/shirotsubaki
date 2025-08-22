@@ -2,7 +2,10 @@ import shirotsubaki.report
 import shirotsubaki.utils
 from shirotsubaki.style import Style
 from shirotsubaki.element import Element as Elm
+import matplotlib
+import matplotlib.pyplot as plt
 import os
+import pytest
 
 
 remove_output = False
@@ -109,7 +112,31 @@ def test_style():
     assert sty0['.scrollable-table-container']['overflow'] == 'auto'
 
 
-def test_report_hoge():
+@pytest.mark.parametrize('fmt, embed, dpi', [
+    ['svg', False, 100],
+    ['png', False, 100],
+    ['png', False, 60],
+    ['svg', True, 100],
+    ['png', True, 100],
+    ['png', True, 60],
+])
+def test_report_with_plot(fmt, embed, dpi):
+    matplotlib.rcParams['svg.fonttype'] = 'none'
+    matplotlib.rcParams['path.simplify_threshold'] = 1.0
+
     rp = shirotsubaki.report.Report(title='Fruits')
-    out_html = 'tests/my_report_hoge.html'
+    rp.style.set('body', 'background', 'azure')
+    fig, ax = plt.subplots(nrows=1, figsize=(4, 3))  # , facecolor='w'
+    ax.plot([0, 1, 2, 3, 4], [0.7, 0.5, 0.40, 0.35, 0.3])
+    ax.plot([0, 1, 2, 3, 4], [0.7, 0.6, 0.55, 0.50, 0.475])
+    rp.append(shirotsubaki.utils.figure_to_html(
+        fig,
+        fmt,
+        embed,
+        html_dir='tests/',
+        img_rel_path=f'img/plot_{dpi}.{fmt}',
+        dpi=dpi,
+        callback=plt.close,
+    ))
+    out_html = f'tests/my_report_with_plot_{fmt}_{1 if embed else 0}_{dpi}.html'
     output(rp, out_html)

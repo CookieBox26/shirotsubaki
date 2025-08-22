@@ -3,6 +3,7 @@ from jinja2 import Environment, FileSystemLoader, meta
 import importlib.resources
 from shirotsubaki.style import Style
 from shirotsubaki.element import Element as Elm
+import os
 
 
 class ReportBase(ABC):
@@ -33,12 +34,14 @@ class ReportBase(ABC):
     def append(self, value) -> None:
         pass
 
-    def output(self, out_html) -> None:
+    def output(self, out_html, verbose=True) -> None:
         self._data['style'] = str(self.style)
         for key in self.keys_list:
             self._data[key] = '\n'.join([str(v) for v in self._data[key]])
         with open(out_html, 'w', encoding='utf8', newline='\n') as ofile:
             ofile.write(self.template.render(self._data))
+        if verbose:
+            print(f'{out_html} ({(os.path.getsize(out_html) / 1024):.2f} KB)')
 
     def append_as_toggle(self, toggle_id, content, message='Show details'):
         self.style.set(f'#toggle{toggle_id}', 'display', 'none')
