@@ -15,7 +15,7 @@ def _figure_to_html(
     dpi_html=90,
 ) -> str:
     w, h = fig.get_size_inches()
-    kwargs = {'format': fmt, 'bbox_inches': 'tight'}
+    kwargs = {'format': fmt, 'bbox_inches': 'tight', 'metadata': {'Date': None}}
     if fmt == 'png':
         kwargs['dpi'] = dpi
 

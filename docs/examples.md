@@ -76,21 +76,20 @@ def example_3():
 
 ```python
 import shirotsubaki.report
-import shirotsubaki.utils
-import matplotlib
+from shirotsubaki.utils import figure_to_html
 import matplotlib.pyplot as plt
 
 def example_4():
-    rp = shirotsubaki.report.Report(title='Fruits')
-
-    matplotlib.rcParams['svg.fonttype'] = 'none'
+    plt.rcParams['svg.fonttype'] = 'none'  # to reduce file size
+    plt.rcParams['svg.hashsalt'] = ''  # to make the IDs deterministic
     plt.rcParams['font.size'] = 11
 
     fig, ax = plt.subplots(nrows=1, figsize=(4, 3))
     ax.plot([0, 1, 2, 3, 4], [0.7, 0.5, 0.40, 0.35, 0.3])
     ax.plot([0, 1, 2, 3, 4], [0.7, 0.6, 0.55, 0.50, 0.475])
-    rp.append(shirotsubaki.utils.figure_to_html(fig, callback=plt.close))
 
+    rp = shirotsubaki.report.Report(title='Fruits')
+    rp.append(figure_to_html(fig, callback=plt.close))
     rp.output('docs/example_4.html')
 ```
 
