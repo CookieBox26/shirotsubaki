@@ -34,7 +34,13 @@ class ReportBase(ABC):
     def append(self, value) -> None:
         pass
 
-    def output(self, out_html, verbose=True) -> None:
+    def output(self, out_html: str, verbose: bool =True) -> None:
+        """Output the report.
+
+        Args:
+            out_html: Path to the output file
+            verbose: Whether to print the output file path and file size to stdout
+        """
         self._data['style'] = str(self.style)
         for key in self.keys_list:
             self._data[key] = '\n'.join([str(v) for v in self._data[key]])
@@ -98,6 +104,9 @@ class ReportBase(ABC):
 class Report(ReportBase):
     """A class for creating a simple report.
 
+    Args:
+        title: HTML title (can also be set later)
+
     Example:
         ```python
         import shirotsubaki.report
@@ -112,7 +121,7 @@ class Report(ReportBase):
 
         [example_report.html](../example_report.html)
     """
-    def __init__(self, title=None) -> None:
+    def __init__(self, title: str = None) -> None:
         super().__init__(title)
         self.template = self.env.get_template('report.html')
         self._data['content'] = []
@@ -124,6 +133,9 @@ class Report(ReportBase):
 
 class ReportWithTabs(ReportBase):
     """A class for creating a report with tabs.
+
+    Args:
+        title: HTML title that also serves as the report heading (can also be set later)
 
     Example:
         ```python
@@ -139,7 +151,7 @@ class ReportWithTabs(ReportBase):
 
         [example_report_with_tabs.html](../example_report_with_tabs.html)
     """
-    def __init__(self, title=None) -> None:
+    def __init__(self, title: str = None) -> None:
         super().__init__(title)
         self.template = self.env.get_template('report_with_tabs.html')
         self.style += Style({
@@ -168,19 +180,25 @@ class ReportWithTabs(ReportBase):
         self.current_tab = None
         self.keys_reserved.append('tabs')
 
-    def add_tab(self, key, content=None) -> None:
-        if key in self.tabs:
-            raise KeyError(f'Tab \'{key}\' already exists.')
-        self.tabs[key] = [content] if content else []
-        self.current_tab = key
+    def add_tab(self, tabname: str, content: str | Elm = None) -> None:
+        """Add a tab to the report.
 
-    def append_to_tab(self, key, value) -> None:
-        if key not in self.tabs:
-            self.add_tab(key)
-        self.tabs[key].append(value)
+        Args:
+            tabname: The name of the tab (this will be displayed on the tab)
+            content: The content to be placed in the tab (can also be added later)
+        """
+        if tabname in self.tabs:
+            raise KeyError(f'Tab \'{tabname}\' already exists.')
+        self.tabs[tabname] = [content] if content else []
+        self.current_tab = tabname
 
-    def switch_tab(self, key) -> None:
-        self.current_tab = key
+    def append_to_tab(self, tabname: str, value) -> None:
+        if tabname not in self.tabs:
+            self.add_tab(tabname)
+        self.tabs[tabname].append(value)
+
+    def switch_tab(self, tabname) -> None:
+        self.current_tab = tabname
 
     def append(self, value) -> None:
         self.append_to_tab(self.current_tab, value)
@@ -206,7 +224,7 @@ class ReportWithTabs(ReportBase):
 
     def output(self, out_html) -> None:
         self._create_elements()
-        for key in self.tabs:
-            self.tabs[key] = '\n'.join([str(v) for v in self.tabs[key]])
+        for tabname in self.tabs:
+            self.tabs[tabname] = '\n'.join([str(v) for v in self.tabs[tabname]])
         self._data['tabs'] = self.tabs
         super().output(out_html)

@@ -3,10 +3,13 @@ theme:
   name: material
   palette:
     primary: white
+extra_css:
+  - custom.css
 nav:
   - Home: index.md
-  - Reference: reference.md
   - Examples: examples.md
+  - Reference (Main Report Class): reference_report.md
+  - Reference (Utility Functions): reference_utils.md
 extra:
   social:
     - icon: fontawesome/brands/github
@@ -17,10 +20,11 @@ plugins:
       handlers:
         python:
           options:
+            members_order: source
             heading_level: 3
             show_root_heading: true
             docstring_section_style: list
             show_source: false
-            show_bases: false
+            show_bases: true
 markdown_extensions:
   - pymdownx.superfences

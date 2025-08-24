@@ -3,7 +3,7 @@
 Here are some examples of how to use this package:
 
 
-## Example 1
+### Example 1 (scrollable table)
 
 <a href="../example_1.html" class="asis" target="_blank" rel="noopener noreferrer">example_1.html</a>
 
@@ -29,7 +29,7 @@ def example_1():
 ```
 
 
-## Example 2
+### Example 2 (toggle)
 
 <a href="../example_2.html" class="asis" target="_blank" rel="noopener noreferrer">example_2.html</a>
 
@@ -45,7 +45,7 @@ def example_2():
 ```
 
 
-## Example 3
+### Example 3 (minitabs)
 
 <a href="../example_3.html" class="asis" target="_blank" rel="noopener noreferrer">example_3.html</a>
 
@@ -70,7 +70,7 @@ def example_3():
 ```
 
 
-## Example 4
+### Example 4 (plot)
 
 <a href="../example_4.html" class="asis" target="_blank" rel="noopener noreferrer">example_4.html</a>
 
@@ -92,4 +92,35 @@ def example_4():
     rp.append(shirotsubaki.utils.figure_to_html(fig, callback=plt.close))
 
     rp.output('docs/example_4.html')
+```
+
+
+### Example 5 (data frame)
+
+<a href="../example_5.html" class="asis" target="_blank" rel="noopener noreferrer">example_5.html</a>
+
+```python
+import shirotsubaki.report
+from shirotsubaki.utils import style_float_cols, style_top_ranks_per_row
+import pandas as pd
+
+def example_5():
+    rp = shirotsubaki.report.Report(title='Fruits')
+
+    df = pd.DataFrame({
+        'Task Name': ['Task 1', 'Task 2', 'Task 3', 'Task 4'],
+        'Model A Loss': [0.1, 0.3, 0.1, 0.1],
+        'Model B Loss': [0.2, 0.1, 0.3, 0.1],
+        'Model C Loss': [0.3, 0.2, 0.1, 0.1],
+    })
+    df.set_index('Task Name', inplace=True, drop=True)
+    df.columns.name = 'Task Name'
+    df.index.name = None
+
+    styled = df.style
+    styled = style_float_cols(styled)
+    styled = style_top_ranks_per_row(styled, [col for col in df.columns if col.startswith('Model')])
+    rp.append(styled.to_html())
+
+    rp.output('docs/example_5.html')
 ```

@@ -1,10 +1,16 @@
 # Shirotsubaki
 
-This package is being developed to help generate beautiful reports.  
-You can install the release version from [PyPI](https://pypi.org/project/shirotsubaki/).
+Shirotsubaki is a package designed to help you generate beautiful reports.  
+You can install it from [PyPI](https://pypi.org/project/shirotsubaki/).
 ```
 pip install shirotsubaki
 ```
 
-See the function and class references below:  
-[Reference](reference.md)
+Examples:
+
+- [Examples](examples.md)
+
+API References:
+
+- [Reference (Main Report Class)](reference_report.md)
+- [Reference (Utility Functions)](reference_utils.md)
