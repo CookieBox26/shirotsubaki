@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "shirotsubaki"
-version = "0.0.1a5"
+version = "0.0.1a6"
 description = "This package is being developed to help generate beautiful reports."
 readme = "README.md"
 requires-python = ">=3.10"

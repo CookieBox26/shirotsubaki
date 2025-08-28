@@ -49,6 +49,7 @@ def figure_to_html(
     html_dir : str = None,
     img_rel_path : str = None,
     dpi : int = 100,
+    dpi_html : int = 90,
     callback : Callable[[], None] = None,
 ) -> str:
     """Convert a matplotlib Figure into HTML.  
@@ -61,6 +62,7 @@ def figure_to_html(
         html_dir: Output directory of the HTML report (used when embed=False)
         img_rel_path: Relative path from the HTML file to the image file (used when embed=False)
         dpi: Resolution used only when fmt='png'
+        dpi_html: Used to calculate the display size in the HTML file
         callback: A function to call after converting (e.g., matplotlib.pyplot.close)
 
     Returns:
