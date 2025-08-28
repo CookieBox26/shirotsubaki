@@ -41,11 +41,15 @@ class ReportBase(ABC):
             out_html: Path to the output file
             verbose: Whether to print the output file path and file size to stdout
         """
-        self._data['style'] = str(self.style)
-        for key in self.keys_list:
-            self._data[key] = '\n'.join([str(v) for v in self._data[key]])
+        data = {}
+        for key, value in self._data.items():
+            if key in self.keys_list:
+                data[key] = '\n'.join([str(v) for v in value])
+            else:
+                data[key] = value
+        data['style'] = str(self.style)
         with open(out_html, 'w', encoding='utf8', newline='\n') as ofile:
-            ofile.write(self.template.render(self._data))
+            ofile.write(self.template.render(data))
         if verbose:
             print(f'{out_html} ({(os.path.getsize(out_html) / 1024):.2f} KB)')
 
@@ -224,7 +228,8 @@ class ReportWithTabs(ReportBase):
 
     def output(self, out_html) -> None:
         self._create_elements()
+        tabs = {}
         for tabname in self.tabs:
-            self.tabs[tabname] = '\n'.join([str(v) for v in self.tabs[tabname]])
-        self._data['tabs'] = self.tabs
+            tabs[tabname] = '\n'.join([str(v) for v in self.tabs[tabname]])
+        self._data['tabs'] = tabs
         super().output(out_html)
